@@ -18,7 +18,7 @@
         * To reduce this, we can say that the initial coordinate describes
           the left and bottom, respectively, and the width and height
           describe the top and right as Y+H and X+W, respectively.
-
+    2. Lmao idk
     3. Get each point of rectangle into an array.
     4. Get the maximum/minimum of the array.
     5. Output will be the points of the intersecting triangle.
@@ -40,9 +40,9 @@ class Rectangle {
     private int area;
 
     public Rectangle(String input) {
-        List<Integer> dimensions = Arrays.stream(input.split(" "))
+        List<Integer> dimensions = Arrays.stream(input.split(" ")) //Split by space
             .map(Integer::parseInt)
-            .collect(Collectors.toList()); //Split by space
+            .collect(Collectors.toList()); 
         this.left = dimensions.get(0); //X
         this.bot = dimensions.get(1); //Y
         this.width = dimensions.get(2);
@@ -100,7 +100,6 @@ class RectIntersection {
     List<Integer> getTop(List<Rectangle> rectangles) { return rectangles.stream().map(Rectangle::getTop).collect(Collectors.toList()); }
 
     Rectangle findIntersection(List<Rectangle> rectangles) {
-
         //Get lists
         List<Integer> bot = getBot(rectangles);
         List<Integer> left = getLeft(rectangles);
@@ -121,10 +120,10 @@ class RectIntersection {
     
     public static void main(String[] args) {
         RectIntersection algo = new RectIntersection(); //Initialize class methods
-        //List<Rectangle> rectangles = new ArrayList(Rectangle);
         
         //Input
         List<Rectangle> rectangles = new ArrayList();
+        //rectangles.add(new Rectangle("1 1 1 1"));
         rectangles.add(new Rectangle("0 0 3 3"));
         rectangles.add(new Rectangle("1 -1 5 5"));
 
@@ -138,7 +137,8 @@ class RectIntersection {
             }}
         );
         */
-
+        
+        // Output
         System.out.println(
             "Intersection Rectangle is: " + intersection.dimensions() + 
             "\nArea of Intersection is: " + intersection.getArea() +
