@@ -50,7 +50,9 @@ class Rectangle {
         this.right = this.left + this.width; //X + W
         this.top = this.bot + this.length; //Y + H
         this.area = this.length * this.width;
-        
+
+        //Check
+        if (this.area < 0) { throw new NegativeAreaException(this.area + " is negative!"); }
     }
 
     public Rectangle(int left, int bot, int right, int top) {
@@ -61,6 +63,9 @@ class Rectangle {
         this.width = this.right-this.left;
         this.length = this.top-this.bot;
         this.area = this.length * this.width;
+
+        //Check
+        if (this.area < 0) { throw new NegativeAreaException(this.area + " is negative!"); }
     }
 
     // Getters/Setters
@@ -72,7 +77,8 @@ class Rectangle {
     public int getLength() { return this.length; }
     public int getArea() { return this.area; }
 
-    public String dimensions() { return this.left + " " + this.bot + " " + this.width + " " + this.length + " "; }
+    public String getDimensions() { return this.left + " " + this.bot + " " + this.width + " " + this.length + " "; }
+    public String getPoints() { return "(" + this.left + ", " + this.bot + "), (" + this.right + ", " + this.top + ")"; }
 }
 
 class RectIntersection {
@@ -100,51 +106,32 @@ class RectIntersection {
     List<Integer> getTop(List<Rectangle> rectangles) { return rectangles.stream().map(Rectangle::getTop).collect(Collectors.toList()); }
 
     Rectangle findIntersection(List<Rectangle> rectangles) {
-        //Get lists
-        List<Integer> bot = getBot(rectangles);
-        List<Integer> left = getLeft(rectangles);
-        List<Integer> right = getRight(rectangles);
-        List<Integer> top = getTop(rectangles);
+        int left = findLeft(getLeft(rectangles));
+        int bot = findBot(getBot(rectangles));
+        int right = findRight(getRight(rectangles));
+        int top = findTop(getTop(rectangles));
 
-        //Process lists
-        int intBot = findBot(bot);
-        int intLeft = findLeft(left);
-        int intRight = findRight(right);
-        int intTop = findTop(top);
-
-        //Create new Rectangle from intersection
-        return new Rectangle(intLeft, intBot, intRight, intTop);
+        return new Rectangle(left, bot, right, top);
     }
 
-    int findArea(List<Rectangle> rectangles) { return (rectangles.stream().map(Rectangle::getArea).collect(Collectors.toList())).stream().reduce(Integer::sum).get(); }
+    int findArea(List<Rectangle> rectangles) { return rectangles.stream().map(Rectangle::getArea).reduce(Integer::sum).get(); }
     
     public static void main(String[] args) {
         RectIntersection algo = new RectIntersection(); //Initialize class methods
         
         //Input
-        List<Rectangle> rectangles = new ArrayList();
-        //rectangles.add(new Rectangle("1 1 1 1"));
+        List<Rectangle> rectangles = new ArrayList<Rectangle>();
         rectangles.add(new Rectangle("0 0 3 3"));
         rectangles.add(new Rectangle("1 -1 5 5"));
 
         Rectangle intersection = algo.findIntersection(rectangles);
-
-        /*
-        Rectangle intersection = algo.findIntersection(
-            new ArrayList<Rectangle>(){{
-                add(new Rectangle("0 0 3 3"));
-                add(new Rectangle("1 -1 5 5"));
-            }}
-        );
-        */
         
         // Output
         System.out.println(
-            "Intersection Rectangle is: " + intersection.dimensions() + 
+            "Intersection Rectangle is: " + intersection.getDimensions() + " // " + intersection.getPoints() + 
             "\nArea of Intersection is: " + intersection.getArea() +
             "\nTotal Area - Area of Intersection is: " + ( (int) algo.findArea(rectangles) - intersection.getArea() )
             );
     }
 }
-
 
